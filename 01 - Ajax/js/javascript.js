@@ -1,12 +1,12 @@
 console.log('Just loaded a new page!')
-let ajax
+let redirect
 const manageLogin = () => {
-	console.log("🚀 ~ file: javascript.js ~ line 3 ~ ajax", ajax)
-	if (ajax) {
+	if (redirect) {
 		document.body.innerHTML = 
 		`<div class="container">
 			<h1>HOME</h1>
 		</div>`
+		return false
 	} else {
 		return true
 	}

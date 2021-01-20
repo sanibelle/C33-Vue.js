@@ -3,11 +3,27 @@
 		<meta charset="UTF-8">
 		<title>Vue, la base</title>
 		<link rel="stylesheet" href="css/global.css">
+		<script src="https://unpkg.com/vue@2.6.12/dist/vue.js"></script>
 	</head>
 	<body>
 		<div id="container">
-			<h1>Mon ttire</h1>
-			<input type="text">
+			<h1>{{ titre ? titre : 'Rien à dire' }}</h1>
+			<!-- Si titre contient des caractères ? affiche titre : sinon, affiche Rien à dire -->
+			<!-- v-model va chercher la variable titre dans data -->
+			<input v-model="titre" type="text">
 		</div>
+		<script>
+			new Vue({
+				// Indique à quel balise s'accroche l'objet vue
+				// # veut dire id.
+				el: "#container", // ici on met une autre ligne
+				// C'est les données de notre page web.
+				// Par exemple, les items dans notre panier d'achat
+				data: {
+					// on met un : et non pas un =
+					titre: "Salut tout le monde!"
+				}
+			})
+		</script>
 	</body>
 </html>

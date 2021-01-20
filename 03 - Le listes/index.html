@@ -3,18 +3,92 @@
 		<meta charset="UTF-8">
 		<title>Vue, la base</title>
 		<link rel="stylesheet" href="css/global.css">
+		<script src="https://unpkg.com/vue@2.6.12/dist/vue.js"></script>
 	</head>
 	<body>
 		<div id="container">
 			<h1>Mon panier d'achat</h1>
 			<div id="list-container">
-				<div class="item">
-					<div class="item-cell">Tarte</div>
-					<div class="item-cell">5.00$</div>
-					<input class="item-cell" type="number" value=1>
-					<div class="item-cell">🗑️</div>
+				<!-- l'attribut v-for sert à itérer sur tous les éléments d'un tableau -->
+				<div v-for="monElement in monTableau" class="item">
+					<!-- Pour une classe conditionnelle -->
+					<!-- :class[predicat ? 'classe si vrai' : 'classe si faux'] -->
+					<div :class="[monElement.nom == 'Tarte' ? 'red' : 'blue']" class="item-cell">{{monElement.nom}}</div>
+					<div class="item-cell">{{monElement.prix}}$</div>
+					<!-- Pour un input, c'est v-model -->
+					<input class="item-cell" type="number" v-model="monElement.nb" min="0">
+					<div class="item-cell" @click="supprimer(monElement)">🗑️</div>
 				</div>
+
+				<div class="item">
+					<input class="item-cell" type="text" v-model="nomNouvelElement">
+					<input class="item-cell" type="number" v-model="prixNouvelElement" min="0">
+					<input class="item-cell" type="number" v-model="nbNouvelElement" min="0">
+					<div class="item-cell" @click="ajouter()">+</div>
+				</div>
+
+			</div>
+			<!-- Affichage conditionnel. v-if () affiche si true -->
+			<div id="total" v-if="montantTotal > 0">
+				<!-- Comment afficher une valeur computed. Il ne faut pas mettre les *****()***** -->
+				<h2>Montant total : {{ montantTotal }}</h2>
+				<h2>Taxes totales : {{ montantTaxe }}</h2>
 			</div>
 		</div>
+		<script>
+			new Vue({
+				el: "#container",
+				methods: {
+					ajouter() {
+						if(this.monTableau.filter(e => e.nom == this.nomNouvelElement).length){
+							alert(`t'en a deja de ca : ${this.nomNouvelElement}, fak, ma ten met un`)
+							const idx = this.monTableau.indexOf(e => e.nom == this.nomNouvelElement)
+							this.monTableau[1].nb++
+						} else {
+							this.monTableau.push(
+								{nom: this.nomNouvelElement, 
+									prix: this.prixNouvelElement, 
+									nb: this.nbNouvelElement}
+							)
+						}
+					},
+					supprimer(monElement) {
+						this.monTableau = this.monTableau.filter(e => e.nom != monElement.nom)
+					}
+				},
+				data: {
+					monTableau: [
+						{nom: 'Tarte', prix: 5.00, nb:1},
+                        {nom: 'Pain', prix: 2.00, nb:1},
+                        {nom: 'Banane', prix: 0.55, nb:2}
+					],
+					nomNouvelElement: 'Pain',
+					prixNouvelElement: 5,
+					nbNouvelElement: 1
+				},
+				/*
+				Computed sert à retourner une valeur qu'on calcul
+				ET qui n'a pas d'arguments en paramètres
+				Ne modifie pas la valeur d'un attribut
+				*/
+				computed: {
+					montantTotal() {
+						let total = 0
+						// Dans new Vue, si on veut référer à une variable dans
+						// - data
+						// - computed
+						// on doit utiliser le this
+						this.monTableau.forEach(e => {
+							total += e.prix * e.nb
+						});
+						// il faut retourner la valeur calculée
+						return total
+					},
+					montantTaxe() {
+						return this.montantTotal * .15
+					}
+				}
+			})
+		</script>
 	</body>
 </html>

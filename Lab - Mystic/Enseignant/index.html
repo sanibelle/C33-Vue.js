@@ -1,0 +1,107 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Epic quest</title>
+		<link rel="stylesheet" href="css/global.css">
+		<script src="https://unpkg.com/vue@2.6.12/dist/vue.js"></script>
+	</head>
+	<body>
+		<div class="container" id="vue-el">
+			<h1>La quête mystik des dragons perdus</h1>
+			<button v-if="showAddPlayer" id='add-player' @click="addPlayer()">Ajouter un joueur</button>
+			<div class="flex" v-for="p in players">
+				<div>
+					<label for="nom">Nom du héro</label>
+					<br>
+					<input type="text" name="nom"  v-model="p.name"  :disabled="p.locked">
+				</div>
+				<div class="skill">
+					<label for="Force">Force</label>
+					<input type="number" name="Force" min="0" v-model="p.force" :disabled="p.locked">
+				</div>
+				<div class="skill">
+					<label for="Force">Agilité</label>
+					<input type="number" name="Agilité" min="0" v-model="p.agility" :disabled="p.locked">
+				</div>
+				<div class="skill">
+					<label for="Force">Arcane</label>
+					<input type="number" name="Arcane" min="0" v-model="p.arcane" :disabled="p.locked">
+				</div>
+				<div>
+					<label for="Left"><span :class="usedPoints(p) > 5 ? 'green' : 'red'">{{ usedPoints(p) }}</span> points restants</label>
+				</div>
+				<div>
+					<input class="lock" type="image" src="images/lock.png" alt="Sauvegarder" :disabled="p.locked" @click="savePlayer(p)">
+				</div>
+			</div>
+			<div class="stats flex">
+				<div class="stat">
+					<p>{{attackValue}}</p>
+					<img src="images/sword.png" alt="attack">
+				</div>
+				<div class="stat">
+					<p>{{defenseValue}}</p>
+					<img src="images/shield.png" alt="magic">
+				</div>
+				<div class="stat">
+					<p>{{arcaneValue}}</p>
+					<img src="images/penta.png" alt="magic">
+				</div>
+			</div>
+		</div>
+		<script>
+			new Vue({
+				el: "#vue-el",
+				data:{
+					players: []
+				},
+				methods: {
+					addPlayer: function() {
+						this.players.push({name:'', force:0, agility:0, arcane:0, roll: this.rollDices(), locked:false})
+					},
+					savePlayer: function(player) {
+						if(this.usedPoints(player) !== 0) {
+							alert(`Il vous reste ${player.roll} point.s à utiliser`)
+						} else if(player.name === "") {
+							alert("Le nom du joueur doit être inscrit")
+						} else {
+							player.locked =  true
+						}
+					},
+					rollDices() {
+						return Math.floor(Math.random()*6) + 1 + Math.floor(Math.random()*6) + 1
+					},
+					usedPoints(p) {
+						return p.roll - p.arcane - p.force - p.agility
+					}
+				},
+				computed: {
+					showAddPlayer() {
+						return this.players.length < 3
+					},
+					attackValue() {
+						let val = 0
+						this.players.forEach(p => {
+							val+=Number.parseInt(p.force)
+						})
+						return val
+					},
+					defenseValue() {
+						let val = 0
+						this.players.forEach(p => {
+							val+=Number.parseInt(p.agility)
+						})
+						return val
+					},
+					arcaneValue() {
+						let val = 0
+						this.players.forEach(p => {
+							val+=Number.parseInt(p.arcane)
+						})
+						return val
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
