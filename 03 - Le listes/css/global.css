@@ -1,0 +1,53 @@
+
+* {
+	margin:0;
+	padding:0;
+}
+
+html {
+	background-color: bisque;
+	height:100%;
+	background-size: cover;
+	color:gray;
+	text-shadow: 0 0 2px black;
+	font-size:30px;
+}
+
+input {
+	font-size: 100px;
+}
+
+h1 {
+	text-align:center;
+}
+.item {
+	display:flex;
+	width: 900px;
+	margin: auto;
+}
+
+
+.item-cell {
+	width: 200px;
+	height: 100%;
+	margin: 10px;
+	font-size:60px
+}
+#total {
+	margin:20px auto;
+	width:900px;
+	color: black
+}
+
+.container {
+	margin:20px auto;
+	width:900px;
+}
+
+.blue {
+	color: blue
+}
+
+.red {
+	color: red
+}

@@ -1,0 +1,94 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Epic quest</title>
+		<link rel="stylesheet" href="css/global.css">
+		<script src="https://unpkg.com/vue@2.6.12/dist/vue.js"></script>
+	</head>
+	<body>
+		<div class="container" id="vue-el">
+			<h1>La quête mystik des dragons perdus</h1>
+			<button id='add-player'>Ajouter un joueur</button>
+			<div class="flex">
+				<div>
+					<label for="nom">Nom du héro</label>
+					<br>
+					<input type="text" name="nom">
+				</div>
+				<div class="skill">
+					<label for="Force">Force</label>
+					<input type="number" name="Force" min="0">
+				</div>
+				<div class="skill">
+					<label for="Force">Agilité</label>
+					<input type="number" name="Agilité" min="0">
+				</div>
+				<div class="skill">
+					<label for="Force">Arcane</label>
+					<input type="number" name="Arcane" min="0">
+				</div>
+				<div>
+					<label for="Left"><span>12</span> points restants</label>
+				</div>
+				<div>
+					<input class="lock" type="image" src="images/lock.png" alt="Sauvegarder">
+				</div>
+			</div>
+			<div class="stats flex">
+				<div class="stat">
+					<p>attackValue</p>
+					<img src="images/sword.png" alt="attack">
+				</div>
+				<div class="stat">
+					<p>defenseValue</p>
+					<img src="images/shield.png" alt="magic">
+				</div>
+				<div class="stat">
+					<p>arcaneValue</p>
+					<img src="images/penta.png" alt="magic">
+				</div>
+			</div>
+		</div>
+		<script>
+			new Vue({
+				el: "#vue-el",
+				data:{
+					// Un objet player vide s'écrit ainsi
+					// On voit que roll va prendre la valeur que le résultat de rollDices va retourner
+					// À son initialisation
+					// {name:'', force:0, agility:0, arcane:0, roll: this.rollDices(), locked:false}
+					// L'attribut locked permet de mettre les inputs disabled
+					players: []
+				},
+				methods: {
+					addPlayer: function() {
+						
+					},
+					savePlayer: function(player) {
+						
+					},
+					rollDices() {
+						
+					},
+					usedPoints(p) {
+						
+					}
+				},
+				computed: {
+					showAddPlayer() {
+						
+					},
+					attackValue() {
+						
+					},
+					defenseValue() {
+						
+					},
+					arcaneValue() {
+						
+					}
+				}
+			})
+		</script>
+	</body>
+</html>

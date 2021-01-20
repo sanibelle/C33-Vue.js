@@ -1,0 +1,53 @@
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Vue, la base</title>
+		<link rel="stylesheet" href="css/global.css">
+		<script src="https://unpkg.com/vue@2.6.12/dist/vue.js"></script>
+	</head>
+	<body>
+		<div id="container">
+			<h1>Mon panier d'achat</h1>
+			<div id="list-container">
+				<div class="item" v-for="item in itemList">
+					<div class="item-cell" :class="[item.name == 'Tarte' ? 'red' : 'blue']">{{ item.name }}</div>
+					<div class="item-cell">{{ item.price }}$</div>
+					<input class="item-cell" type="number" v-model="item.count">
+					<div class="item-cell" @click="deleteItem(item.name)">🗑️</div>
+				</div>
+				<div id="total" v-if="totalPrice > 0">
+					<h2> 
+						Montant total : {{totalPrice}}$
+					</h2>
+				</div>
+			</div>
+		</div>
+		<script>
+			new Vue({
+				el: "#list-container",
+				data:{
+					itemList: [
+						{name: 'Tarte',price: 5.00, count:1},
+						{name: 'Pain',price: 2.00, count:1},
+						{name: 'Banane',price: 0.55, count:2},
+					]
+				},
+				methods: {
+					deleteItem: function(itemName) {
+						this.itemList = this.itemList.filter(i => i.name != itemName)
+						console.log(this.itemList)
+					}
+				},
+				computed: {
+					totalPrice() {
+						let total = 0
+						this.itemList.forEach(e => {
+							total += e.count*e.price
+						});
+						return total
+					}
+				}
+			})
+		</script>
+	</body>
+</html>
