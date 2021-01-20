@@ -40,10 +40,10 @@
 				el: "#container",
 				methods: {
 					ajouter() {
-						if(this.monTableau.filter(e => e.nom == this.nomNouvelElement).length){
-							alert(`t'en a deja de ca : ${this.nomNouvelElement}, fak, ma ten met un`)
-							const idx = this.monTableau.indexOf(e => e.nom == this.nomNouvelElement)
-							this.monTableau[1].nb++
+						const idx = this.monTableau.findIndex(e => e.nom == this.nomNouvelElement)
+						if(idx !== -1){
+							alert(`t'en a deja de ca : ${this.nomNouvelElement}, fak, ma ten met ${this.nbNouvelElement} de pluss`)
+							this.monTableau[idx].nb+=Number.parseInt(this.nbNouvelElement)
 						} else {
 							this.monTableau.push(
 								{nom: this.nomNouvelElement, 
