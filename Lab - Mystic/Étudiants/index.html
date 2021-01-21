@@ -8,43 +8,46 @@
 	<body>
 		<div class="container" id="vue-el">
 			<h1>La quête mystik des dragons perdus</h1>
-			<button id='add-player'>Ajouter un joueur</button>
-			<div class="flex">
+			<button id='add-player' v-if="showAddPlayer" @click="addPlayer()">Ajouter un joueur</button>
+			<div v-for="joueur in players" class="flex">
 				<div>
-					<label for="nom">Nom du héro</label>
+					<label for="nom">Nom du héro : {{joueur.name}}</label>
 					<br>
-					<input type="text" name="nom">
+					<input type="text" name="nom" v-model="joueur.name" :disabled="joueur.locked">
 				</div>
 				<div class="skill">
 					<label for="Force">Force</label>
-					<input type="number" name="Force" min="0">
+					<input type="number" name="Force" min="0" v-model="joueur.force" :disabled="joueur.locked">
 				</div>
 				<div class="skill">
 					<label for="Force">Agilité</label>
-					<input type="number" name="Agilité" min="0">
+					<input type="number" name="Agilité" min="0" v-model="joueur.agility" :disabled="joueur.locked">
 				</div>
 				<div class="skill">
 					<label for="Force">Arcane</label>
-					<input type="number" name="Arcane" min="0">
+					<input type="number" name="Arcane" min="0" v-model="joueur.arcane" :disabled="joueur.locked">
 				</div>
 				<div>
-					<label for="Left"><span>12</span> points restants</label>
+					<label for="Left">
+						<span :class="[ usedPoints(joueur) < 0 ? 'poutine' : 'green']">{{usedPoints(joueur)}}</span> points restants
+					</label>
 				</div>
 				<div>
-					<input class="lock" type="image" src="images/lock.png" alt="Sauvegarder">
+					<input @click=savePlayer(joueur) class="lock" type="image" src="images/lock.png" alt="Sauvegarder">
 				</div>
 			</div>
+			
 			<div class="stats flex">
 				<div class="stat">
-					<p>attackValue</p>
+					<p>{{attackValue}}</p>
 					<img src="images/sword.png" alt="attack">
 				</div>
 				<div class="stat">
-					<p>defenseValue</p>
+					<p>{{defenseValue}}</p>
 					<img src="images/shield.png" alt="magic">
 				</div>
 				<div class="stat">
-					<p>arcaneValue</p>
+					<p>{{arcaneValue}}</p>
 					<img src="images/penta.png" alt="magic">
 				</div>
 			</div>
@@ -61,31 +64,54 @@
 					players: []
 				},
 				methods: {
-					addPlayer: function() {
-						
+					addPlayer() {
+						this.players.push({name:'', 
+						force:0, 
+						agility:0, 
+						arcane:0, 
+						roll: this.rollDices(), 
+						locked:false})
 					},
-					savePlayer: function(player) {
-						
+					savePlayer(j) {
+						if(j.name == ""){
+							alert("Le nom est pas entré")
+						} else if (this.usedPoints(j) != 0) {
+							alert("Il faut utiliser tous les points")
+						} else {
+							j.locked = true
+						}
 					},
 					rollDices() {
-						
+						return Math.ceil(Math.random()*6) + Math.ceil(Math.random()*6)
 					},
-					usedPoints(p) {
-						
+					usedPoints(j) {
+						return j.roll - j.force - j.agility - j.arcane
 					}
 				},
 				computed: {
 					showAddPlayer() {
-						
+						return this.players.length < 3
 					},
 					attackValue() {
-						
+						let total = 0
+						this.players.forEach(p => {
+							total+= Number.parseInt(p.force)
+						});
+						return total
 					},
 					defenseValue() {
-						
+						let total = 0
+						this.players.forEach(p => {
+							total+= Number.parseInt(p.agility)
+						});
+						return total
 					},
 					arcaneValue() {
-						
+						let total = 0
+						this.players.forEach(p => {
+							total+= Number.parseInt(p.arcane)
+						});
+						return total
 					}
 				}
 			})
